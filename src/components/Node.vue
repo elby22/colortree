@@ -1,10 +1,11 @@
 <template>
-	<div class="node" @click="split" :style="style">
+	<div class="node" @click="split" @contextmenu.stop.prevent="destroy(0)" :style="style">
 		<div class="children" v-if="hasChildren">
 			<node :root="root.children[0]"></node>
 			<div class="drag-handle" @mousedown="startDrag"></div>
 			<node :root="root.children[1]"></node>
 		</div>
+		<div class="leaf" v-else></div>
 	</div>
 </template>
 
@@ -62,6 +63,11 @@ export default {
 			})
 
 		},
+		destroy(index){
+			console.log(index);
+			if(!this.hasChildren) return;
+			this.root.children = [];
+		},
 		startDrag(e){
 			console.log(e)
 			this.isDragging = true;
@@ -109,5 +115,8 @@ export default {
 		width: 4px;
 		background-color: black;
 		cursor: ew-resize;
+	}
+	.leaf{
+
 	}
 </style>
