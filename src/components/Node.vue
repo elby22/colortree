@@ -1,11 +1,25 @@
 <template>
-	<div class="node" @click="split" @contextmenu.stop.prevent="destroy(0)" :style="style">
-		<div class="children" v-if="hasChildren">
-			<node :root="root.children[0]"></node>
-			<div class="drag-handle" @mousedown="startDrag"></div>
-			<node :root="root.children[1]"></node>
+	<div class="node" :style="nodeStyle">
+		<div class="children" v-if="hasChildren" @contextmenu.prevent="destroy(0)">
+			<node :root="root.children[0]" :class="{'highlight': hoveringDragHandle || isDragging}"></node>
+			<div 
+				:style="dragHandleStyle" 
+				class="drag-handle"
+
+				:class="{'highlight': hoveringDragHandle || isDragging}"
+				@mousedown="startDrag" 
+				@mouseover="hoveringDragHandle = true"  
+				@mouseout="hoveringDragHandle = false" 
+			>
+				<div class="visible-part"></div>
+			</div>
+			<node :root="root.children[1]" :class="{'highlight': hoveringDragHandle || isDragging}"></node>
 		</div>
-		<div class="leaf" v-else></div>
+		<div 
+			class="leaf" 
+			v-else
+			@click="split"  
+		></div>
 	</div>
 </template>
 
@@ -24,6 +38,7 @@ export default {
 			mousemoveHandler: null,
 			mouseupHandler: null,
 			isDragging: false,
+			hoveringDragHandle: false
 		}
 	},
 	mounted(){
@@ -31,7 +46,7 @@ export default {
 		this.mouseupHandler = document.addEventListener('mouseup', this.endDrag.bind(this));
 	},
 	computed: {
-		style(){
+		nodeStyle(){
 			let style = {
 				'flex-basis': `${this.root.width}%`
 			}
@@ -39,6 +54,18 @@ export default {
 				style['background-color'] = this.root.color;
 			}
 			return style;
+		},
+		// nodeclass(){
+		// 	let classes = [];
+		// 	if(this.hoveringDragHandle) classes.push('node-highlight')
+		// },
+		dragHandleStyle(){
+			return {
+				left: `${this.childrenWidths[0]}%`,
+			}
+		},
+		childrenWidths(){
+			return [this.root.children[0].width, this.root.children[1].width];
 		},
 		hasChildren(){
 			return this.root.children.length;
@@ -52,21 +79,27 @@ export default {
 			this.root.children.push({
 				color: this.root.color ,
 				width: 50,
-				children: []
+				children: [], 
+				depth: this.root.depth + 1
 			})
 
 			
 			this.root.children.push({
 				color: this.root.color = chroma.random(),
 				width: 50,
-				children: []
-			})
+				children: [],
+				depth: this.root.depth + 1
+			});
+
+			this.$root.$data.height++;
 
 		},
 		destroy(index){
 			console.log(index);
 			if(!this.hasChildren) return;
 			this.root.children = [];
+			this.$root.$data.height--;
+
 		},
 		startDrag(e){
 			console.log(e)
@@ -100,23 +133,57 @@ export default {
 </script>
 
 <style>
-
+	#app{
+		background-color: black;
+	}
 	.node{
 		display: flex;
 		height: 100%;
-		/* border: 3px solid black; */
+	   transition: opacity .25s ease-in-out;
+		-moz-transition: opacity .25s ease-in-out;
+		-webkit-transition: opacity .25s ease-in-out;
+		opacity: 1	
 	}
+
 	.children{
 		width: 100%;
 		height: 100%;
 		display: flex;
+		position: relative;
+		opacity: 1;
+	}
+	.node .highlight{
+		opacity: 0.8;
 	}
 	.drag-handle{
 		width: 4px;
-		background-color: black;
-		cursor: ew-resize;
+		height: 100%;
+		background-color: transparent;
+		position: absolute;
+		/* top: 0px%; */
+		z-index: 1000000;
+		
+		cursor: ew-resize;	
+		opacity: 0;
+	   transition: opacity .25s ease-in-out;
+		-moz-transition: opacity .25s ease-in-out;
+		-webkit-transition: opacity .25s ease-in-out;
 	}
-	.leaf{
 
+	.drag-handle.highlight{
+		opacity: 1;
+	}
+
+	.drag-handle .visible-part{
+		background-color: black;
+		width: 4px;
+		height: 100%;
+		margin-right: 0px;
+	}
+
+
+	.leaf{
+		height: 100%;
+		width: 100%;
 	}
 </style>

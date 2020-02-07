@@ -20,7 +20,8 @@ export default {
 			root: {
 				color: 'blue',
 				width: 100,
-				children: []
+				children: [],
+				depth: 0
 			}
 		}
 	},
