@@ -1,11 +1,8 @@
-<template>
-	<div id="app" class="tree">
-		<node :root="root"></node>
-
-		<div class="landing" v-if="!hasChildren">
-			<div class="words">Click to split</div>
-		</div>
-	</div>
+<template lang="pug">
+	v-app#app.tree
+		node(:root="root")
+		.landing(v-if="!hasChildren")
+			.words Click to split
 </template>
 
 <script>
