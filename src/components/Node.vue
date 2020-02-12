@@ -17,6 +17,7 @@
 		.leaf(
 			v-else 
 		)
+			.size(v-if="$root.$data.showPercents") {{this.size}}
 			v-menu(
 				absolute
 				offset-client
@@ -86,6 +87,9 @@ export default {
 		},
 		hasChildren() {
 			return this.root.children.length;
+		},
+		size(){
+			return `${Math.round(this.root.percent)}%`;
 		}
 	},
 	methods: {
@@ -218,6 +222,14 @@ export default {
 
 			cursor: ns-resize;
 		}
+	}
+
+	.leaf{
+		height: 100%;
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 }
 </style>

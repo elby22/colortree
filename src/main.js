@@ -8,8 +8,8 @@ new Vue({
     render: h => h(App),
 
     data:{
-		height: 0,
-		contextMenuPosition: null
+        height: 0,
+        showPercents: false
 	},
 
     vuetify,

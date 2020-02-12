@@ -2,6 +2,10 @@
 	v-app#app.tree
 		node(:root="root")
 		v-footer
+			v-flex(shrink) 
+				v-btn-toggle(:value="showPercents")
+					v-btn(icon @click="togglePercents") 
+						v-icon mdi-format-size
 			v-flex.text-center Right click a color to split
 </template>
 
@@ -25,9 +29,13 @@ export default {
 	computed: {
 		hasChildren(){
 			return this.root.children.length;
-		}
+		},
+		showPercents(){ return this.$root.$data.showPercents }
 	},
 	methods: {
+		togglePercents(){
+			this.$root.$data.showPercents = !this.$root.$data.showPercents;
+		}
 	}  
 }
 </script>
@@ -38,6 +46,7 @@ export default {
 	}
 	*{
 		box-sizing: border-box;
+		user-select: none;
 	}
 	body{
 		margin: 0px;
