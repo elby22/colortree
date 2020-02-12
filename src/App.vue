@@ -1,8 +1,8 @@
 <template lang="pug">
 	v-app#app.tree
 		node(:root="root")
-		.landing(v-if="!hasChildren")
-			.words Click to split
+		v-footer
+			v-flex.text-center Right click a color to split
 </template>
 
 <script>
@@ -16,7 +16,7 @@ export default {
 		return {
 			root: {
 				color: 'blue',
-				width: 100,
+				percent: 100,
 				children: [],
 				depth: 0
 			}
@@ -33,6 +33,9 @@ export default {
 </script>
 
 <style>
+	html{
+		overflow-y: auto! important;
+	}
 	*{
 		box-sizing: border-box;
 	}
@@ -40,6 +43,7 @@ export default {
 		margin: 0px;
 	}
 	#app{
+		background-color: black;
 		height: 100vh;
 		width: 100vw;
 		position: relative;
