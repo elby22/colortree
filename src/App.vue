@@ -6,6 +6,9 @@
 				v-btn-toggle(:value="showPercents")
 					v-btn(icon @click="togglePercents") 
 						v-icon mdi-format-size
+			v-flex(shrink)
+				v-btn(icon @click="serialize") 
+					v-icon mdi-format-size
 			v-flex.text-center Right click a color to split
 </template>
 
@@ -15,6 +18,9 @@ export default {
 	name: 'app',
 	components: {
 		Node
+	},
+	mounted(){
+		console.log(this.$route);
 	},
 	data(){
 		return {
@@ -35,6 +41,9 @@ export default {
 	methods: {
 		togglePercents(){
 			this.$root.$data.showPercents = !this.$root.$data.showPercents;
+		},
+		serialize(){
+			console.log(btoa(JSON.stringify(this.root)).length);
 		}
 	}  
 }

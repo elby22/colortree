@@ -4,8 +4,9 @@
 	"private": true,
 	"scripts": {
 		"serve": "vue-cli-service serve",
-		"build": "vue-cli-service build && cp -rf ./dist ./docs",
-		"lint": "vue-cli-service lint"
+		"build": "vue-cli-service build",
+		"lint": "vue-cli-service lint",
+		"deploy": "./deploy.sh"
 	},
 	"dependencies": {
 		"chroma-js": "^2.1.0",
@@ -52,8 +53,5 @@
 	"rules": {
 		"test": ".pug$",
 		"loader": "pug-plain-loader"
-	},
-	"transpileDependencies": [
-		"vuetify"
-	]
+	}
 }
